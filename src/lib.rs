@@ -45,32 +45,20 @@ impl Game {
 
     pub fn position(&mut self, user_input: Option<&str>) {
         if let Some(input) = user_input {
-            let player_icon = if self.player_one_turn { "X" } else { "O" };
+            match input.parse::<usize>() {
+                Ok(int_input)
+                    if int_input >= 1 && int_input <= self.board.len() * self.board.len() =>
+                {
+                    let player_icon = if self.player_one_turn { "X" } else { "O" };
 
-            if let Ok(int_input) = input.parse::<usize>() {
-                println!("intput = {}", int_input);
+                    let row = (int_input - 1) / self.board.len();
+                    let col = (int_input - 1) % self.board.len();
 
-                let row = (int_input - 1) / self.board.len();
-                let col = (int_input - 1) % self.board.len();
+                    self.set_position(row, col, player_icon);
+                }
 
-                println!("row = {} col = {}", row, col);
-                self.set_position(row, col, player_icon);
-            } else {
-                println!("Invalid input: \"{}\" is not a number between 0-9", input)
-            }
-
-            // match input {
-            //     "1" => self.set_position(0, 0, player_icon),
-            //     "2" => self.set_position(0, 1, player_icon),
-            //     "3" => self.set_position(0, 2, player_icon),
-            //     "4" => self.set_position(1, 0, player_icon),
-            //     "5" => self.set_position(1, 1, player_icon),
-            //     "6" => self.set_position(1, 2, player_icon),
-            //     "7" => self.set_position(2, 0, player_icon),
-            //     "8" => self.set_position(2, 1, player_icon),
-            //     "9" => self.set_position(2, 2, player_icon),
-            //     _ => println!("Invalid input"),
-            // }
+                _ => println!("Invalid input: \"{}\" is not a number between 0-9", input),
+            };
         }
     }
 
@@ -82,16 +70,6 @@ impl Game {
 
 /*
 input = 4
-row = 3 / 3 = 1
-col = 3 % 3 = 0
-
-input = 2
-row = 2 % 3 = 2
-col = 2 / 3 = 0
-
-input = 3
-row = 2 / 3 = 0
-col = 2 % 3 = 2
-ans = row = 0, col = 2
-
+row = (input - 1) / 3 = 1
+col = (input - 1) % 3 = 0
 */
