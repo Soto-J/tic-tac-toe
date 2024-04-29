@@ -47,12 +47,18 @@ impl Game {
         if let Some(input) = user_input {
             let player_icon = if self.player_one_turn { "X" } else { "O" };
 
-            let int_input: usize = input.parse().expect("Failed to parse");
+            if let Ok(int_input) = input.parse::<usize>() {
+                println!("intput = {}", int_input);
 
-            let row = (int_input % self.board.len()) - 1;
-            let col = int_input / self.board.len();
+                let row = (int_input - 1) / self.board.len();
+                let col = (int_input - 1) % self.board.len();
 
-            self.set_position(row, col, player_icon);
+                println!("row = {} col = {}", row, col);
+                self.set_position(row, col, player_icon);
+            } else {
+                println!("Invalid input: \"{}\" is not a number between 0-9", input)
+            }
+
             // match input {
             //     "1" => self.set_position(0, 0, player_icon),
             //     "2" => self.set_position(0, 1, player_icon),
@@ -69,9 +75,6 @@ impl Game {
     }
 
     pub fn set_position(&mut self, row: usize, col: usize, icon: &str) {
-        let row_is_inbound = row >= 0 && row < self.board.len();
-        let col_is_inbound = col >= 0 && row < self.board[row].len();
-
         self.board[row][col] = icon.to_string();
         self.player_one_turn = !self.player_one_turn;
     }
@@ -79,7 +82,16 @@ impl Game {
 
 /*
 input = 4
+row = 3 / 3 = 1
+col = 3 % 3 = 0
 
-row = 4 % 3 = 1
-col = 4 / 3 = 1
+input = 2
+row = 2 % 3 = 2
+col = 2 / 3 = 0
+
+input = 3
+row = 2 / 3 = 0
+col = 2 % 3 = 2
+ans = row = 0, col = 2
+
 */
