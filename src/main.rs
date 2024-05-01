@@ -15,8 +15,8 @@ fn main() {
         io::stdin()
             .read_line(&mut user_input)
             .expect("Failed to read line");
-        println!("Input: {}", user_input);
+        println!("\nInput: {}", user_input);
 
-        game.position(Some(user_input.trim()));
+        game.position(user_input.trim());
     }
 }
